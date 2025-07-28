@@ -413,7 +413,7 @@
       'src/quic/transportparams.h',
       'src/quic/quic.cc',
     ],
-    'nsolid_sources': [
+    'agent_sources': [
       'agents/src/http_client.cc',
       'agents/src/http_client.h',
       'agents/src/profile_collector.cc',
@@ -512,6 +512,8 @@
       'agents/zmq/src/zmq_agent.h',
       'agents/zmq/src/zmq_endpoint.h',
       'agents/zmq/src/zmq_errors.h',
+    ],
+    'nsolid_sources': [
       'src/nsolid.cc',
       'src/nsolid/continuous_profiler.cc',
       'src/nsolid/nsolid_api.cc',
@@ -977,8 +979,9 @@
         'deps/googletest/googletest.gyp:gtest_prod',
         'deps/histogram/histogram.gyp:histogram',
         'deps/nbytes/nbytes.gyp:nbytes',
-        'deps/protobuf/abseil.gyp:abseil',
+        'tools/v8_gypfiles/abseil.gyp:abseil',
         'node_js2c#host',
+        'libagents',
       ],
 
       'sources': [
@@ -1175,6 +1178,34 @@
         },
       ],
     }, # node_lib_target_name
+    {
+      'target_name': 'libagents',
+      'type': '<(node_intermediate_lib_type)',
+      'includes': [
+        'node.gypi',
+      ],
+
+      'include_dirs': [
+        'src',
+        'deps/nsuv/include',
+        'agents',
+      ],
+      'dependencies': [
+        'deps/histogram/histogram.gyp:histogram',
+        'deps/protobuf/abseil.gyp:abseil',
+      ],
+
+      'sources': [
+        '<@(agent_sources)',
+      ],
+      'defines': [
+        'NODE_ARCH="<(target_arch)"',
+        'NODE_PLATFORM="<(OS)"',
+        'NODE_WANT_INTERNALS=1',
+        # Warn when using deprecated V8 APIs.
+        'V8_DEPRECATION_WARNINGS=1',
+      ],
+    }, # node_lib_target_name
     { # fuzz_env
       'target_name': 'fuzz_env',
       'type': 'executable',
@@ -1316,7 +1347,7 @@
         'deps/googletest/googletest.gyp:gtest_main',
         'deps/histogram/histogram.gyp:histogram',
         'deps/nbytes/nbytes.gyp:nbytes',
-        'deps/protobuf/abseil.gyp:abseil',
+        'tools/v8_gypfiles/abseil.gyp:abseil',
       ],
 
       'includes': [
