@@ -23,7 +23,7 @@ updates:
         patterns:
           - '*'
   - package-ecosystem: npm
-    directory: /deps/npm
+    directory: /deps
     schedule:
       interval: daily
 
