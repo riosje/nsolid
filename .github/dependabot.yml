@@ -13,7 +13,7 @@ updates:
   - package-ecosystem: npm
     directory: /tools/eslint
     schedule:
-      interval: monthly
+      interval: daily
     commit-message:
       prefix: tools
     open-pull-requests-limit: ${{secrets.OPEN_PR_LIMIT}}
@@ -22,11 +22,15 @@ updates:
         applies-to: version-updates
         patterns:
           - '*'
+  - package-ecosystem: npm
+    directory: /deps/npm
+    schedule:
+      interval: daily
 
   - package-ecosystem: npm
     directory: /tools/lint-md
     schedule:
-      interval: monthly
+      interval: daily
     commit-message:
       prefix: tools
     open-pull-requests-limit: ${{secrets.OPEN_PR_LIMIT}}
